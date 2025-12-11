@@ -95,7 +95,8 @@ export const Login = () => {
             </button>
 
             <a href="/register" className="creat-acc">
-              Don’t have an account? Create one
+              <p> Don’t have an account?</p>{" "}
+              <span className="create-acc">Create one</span>
             </a>
           </fieldset>
         </form>

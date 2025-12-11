@@ -73,7 +73,10 @@
     font-size: 14px;
 }
 
-.creat-acc:hover{
+.create-acc{
+    margin-left: 5px;
+}
+.create-acc:hover{
     color: rgb(227, 185, 105);
     text-decoration:underline ;
 }
