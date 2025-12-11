@@ -3,10 +3,17 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-import Toast from 'react-bootstrap/Toast';
+import { CustomToast } from "../components/customToast";
 
 export const Register = () => {
   const [loading, setloading] = useState(false);
+
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    bg: "",
+  });
+
   const navigate = useNavigate();
 
   const [formdata, setformdata] = useState({
@@ -21,6 +28,10 @@ export const Register = () => {
       ...formdata,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const showToast = (message, bg = "success") => {
+    setToast({ show: true, message, bg });
   };
 
   const handleSubmit = async (e) => {
@@ -39,61 +50,81 @@ export const Register = () => {
         form
       );
 
-      alert("Account Created!");
-      navigate("/");
+      showToast("Please fill all fields!", "danger");
+      setTimeout(() => {
+        navigate("login");
+      });
     } catch (error) {
       console.log(error.response);
-      alert("Unable to Register");
+      showToast("Unable to Register!");
     } finally {
       setloading(false); // stop spinner
     }
   };
 
   return (
-    <div className="register-container">
-      <form className="register-form" onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>Sign up</legend>
+    <div>
+      <CustomToast
+        show={toast.show}
+        message={toast.message}
+        bg={toast.bg}
+        onClose={() => setToast({ ...toast, show: false })}
+      />
+      <div className="register-container">
+        <form className="register-form" onSubmit={handleSubmit}>
+          <fieldset>
+            <legend>Sign up</legend>
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your Name"
-            value={formdata.name}
-            onChange={handleChange}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your Email"
-            value={formdata.email}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="mobile"
-            placeholder="Enter your Mobile"
-            maxLength={10}
-            value={formdata.mobile}
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your Password"
-            value={formdata.password}
-            onChange={handleChange}
-          />
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your Name"
+              value={formdata.name}
+              onChange={handleChange}
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your Email"
+              value={formdata.email}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="mobile"
+              placeholder="Enter your Mobile"
+              maxLength={10}
+              value={formdata.mobile}
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your Password"
+              value={formdata.password}
+              onChange={handleChange}
+            />
 
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-            disabled={loading}
-          >
-            {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>: "Create account" }
-          </button>
-        </fieldset>
-      </form>
+            <button
+              type="submit"
+              className="btn btn-primary w-100"
+              disabled={loading}
+            >
+              {loading ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (
+                "Create account"
+              )}
+            </button>
+          </fieldset>
+        </form>
+      </div>
     </div>
   );
 };
