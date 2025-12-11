@@ -50,13 +50,13 @@ export const Register = () => {
         form
       );
 
-      showToast("Please fill all fields!", "danger");
+      showToast("Account Created Successfully!!", "success");
       setTimeout(() => {
-        navigate("login");
-      });
+        navigate("/");
+      }, 1000);
     } catch (error) {
       console.log(error.response);
-      showToast("Unable to Register!");
+      showToast("Unable to Register!", "danger");
     } finally {
       setloading(false); // stop spinner
     }
